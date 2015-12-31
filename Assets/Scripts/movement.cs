@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent (typeof(CharacterController))] // Automatically adds the CharacterController to any object containing this script
@@ -29,7 +30,8 @@ public class movement : MonoBehaviour {
     Vector3 speed;
 
 	// Use this for initialization
-	void Start() {
+	void Start()
+    {
 
         canRun = true;
 
@@ -42,8 +44,9 @@ public class movement : MonoBehaviour {
 
 	}
 	
+
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
         // Disables ability to jump and run while crouching
         if (Input.GetButtonDown("Crouch") && !crouching)
