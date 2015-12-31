@@ -44,9 +44,14 @@ public class movement : MonoBehaviour {
 
 	}
 	
+    void FixedUpdate() {
+
+        LookAround();
+
+    }
 
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 
         // Disables ability to jump and run while crouching
         if (Input.GetButtonDown("Crouch") && !crouching)
@@ -91,6 +96,10 @@ public class movement : MonoBehaviour {
         // Gives movement to character
         xMove = Input.GetAxis("Horizontal") * movementSpeed;
         zMove = Input.GetAxis("Vertical") * movementSpeed;
+      
+    }
+
+    void LookAround() {
 
         //Allows character to look around using mouse 
         leftRightLook = Input.GetAxis("Mouse X") * mouseSens;
@@ -110,7 +119,7 @@ public class movement : MonoBehaviour {
         speed = transform.rotation * speed;
 
         cc.Move(speed * Time.deltaTime);
-        
+
     }
 
     void Jumping() {
