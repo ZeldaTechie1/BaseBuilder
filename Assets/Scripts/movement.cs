@@ -103,10 +103,10 @@ public class movement : MonoBehaviour {
 
         //Allows character to look around using mouse 
         leftRightLook = Input.GetAxis("Mouse X") * mouseSens;
-        upDownLook -= Input.GetAxis("Mouse Y") * mouseSens;
+        //upDownLook -= Input.GetAxis("Mouse Y") * mouseSens;
 
         // Sets limit so player can't infinately look up or down
-        upDownLook = Mathf.Clamp(upDownLook, -yRange, yRange);
+       // upDownLook = Mathf.Clamp(upDownLook, -yRange, yRange);
 
         verticalVel += Physics.gravity.y * Time.deltaTime * 2;
                
@@ -115,7 +115,7 @@ public class movement : MonoBehaviour {
         transform.Rotate(0, leftRightLook, 0); // Rotates object on the y axis to wherever the mouse is pointing along the x axis
 
         // Uses camera to rotate player's view up and down
-        Camera.main.transform.localRotation = Quaternion.Euler(upDownLook, 0, 0);
+       // Camera.main.transform.localRotation = Quaternion.Euler(upDownLook, 0, 0);
         speed = transform.rotation * speed;
 
         cc.Move(speed * Time.deltaTime);

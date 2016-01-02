@@ -12,6 +12,8 @@ public class PauseController : MonoBehaviour {
     {
 
         InventoryMenu.enabled = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = (false);
 
     }
 	
@@ -25,7 +27,7 @@ public class PauseController : MonoBehaviour {
         }
         if (paused)
         {
-            // Stops time scale pops up pause menu and brings cursor back to view
+            // Stops time scale, pops up pause menu and brings cursor back to view
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = (true);
