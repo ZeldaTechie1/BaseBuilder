@@ -2640,10 +2640,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0
-  walkSpeed: 40
-  runSpeed: 80
-  mouseSensX: 20
-  mouseSensY: 20
+  walkSpeed: 100
+  runSpeed: 200
+  mouseSensX: 50
+  mouseSensY: 50
   jumpForce: 5
 --- !u!1 &1899778897
 GameObject:
