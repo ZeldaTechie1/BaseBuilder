@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour {
     public float mouseSensX, mouseSensY;
     Vector3 targetSpeed, smoothMove;
 
+    CapsuleCollider cc;
+
     //Jump
     bool grounded;
     public float jumpForce;
@@ -19,6 +21,8 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+
+        cc = GetComponent<CapsuleCollider>();
 
         rb = GetComponent<Rigidbody>();
         moveSpeed = walkSpeed;
@@ -58,11 +62,14 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Crouch
-        if (Input.GetButtonDown("Crouch"))
+        if (Input.GetButton("Crouch"))
         {
-
-            transform.position = new Vector3(transform.position.x, 2.4f, transform.position.z);
-
+            cc.height = 1f;
+            //transform.position = new Vector3(transform.position.x, 2.4f, transform.position.z);
+        }
+        else
+        {
+            cc.height = 2;
         }
 
         Vector3 speed = new Vector3(xMove, 0, zMove);
