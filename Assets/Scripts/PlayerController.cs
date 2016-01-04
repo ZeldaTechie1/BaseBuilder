@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     public float moveSpeed, walkSpeed, runSpeed;
     public float mouseSensX, mouseSensY;
     Vector3 targetSpeed, smoothMove;
+    Vector3 ogPosition, crouchPosition;
 
     CapsuleCollider cc;
 
@@ -21,6 +22,8 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+
+        ogPosition = transform.position;
 
         cc = GetComponent<CapsuleCollider>();
 
@@ -65,12 +68,10 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButton("Crouch"))
         {
             cc.height = 1f;
-            transform.position = new Vector3(transform.position.x, 2.4f, transform.position.z);
-            
         }
         else
         {
-            cc.height = 2;
+            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 4.5f);
         }
 
         Vector3 speed = new Vector3(xMove, 0, zMove);
