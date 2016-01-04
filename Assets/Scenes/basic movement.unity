@@ -1630,8 +1630,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: .300000012
-  far clip plane: 1000
-  field of view: 60
+  far clip plane: 1000.57001
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1653,8 +1653,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1312149645}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.0699996948, y: .542000055, z: -.470000267}
+  m_LocalRotation: {x: -.0654031411, y: 0, z: 0, w: .997858942}
+  m_LocalPosition: {x: -.0699996948, y: .542000055, z: -.470001221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 192649208}
@@ -2607,7 +2607,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1858451602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21, y: 3.0999999, z: -11.4700003}
+  m_LocalPosition: {x: 23.0100002, y: 3.0999999, z: -16.6399994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1312149650}
@@ -2642,8 +2642,8 @@ MonoBehaviour:
   moveSpeed: 0
   walkSpeed: 40
   runSpeed: 80
-  mouseSensX: 40
-  mouseSensY: 40
+  mouseSensX: 20
+  mouseSensY: 20
   jumpForce: 5
 --- !u!1 &1899778897
 GameObject:
