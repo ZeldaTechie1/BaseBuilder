@@ -20,6 +20,11 @@ public class PlayerController : MonoBehaviour {
     bool jumped;
     Rigidbody rb;
 
+    //UI
+    GameObject text, text2;
+    Canvas standingText;
+    Canvas crouchingText;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -30,6 +35,18 @@ public class PlayerController : MonoBehaviour {
 
         rb = GetComponent<Rigidbody>();
         moveSpeed = walkSpeed;
+
+        text = GameObject.Find("StandingText");
+        text2 = GameObject.Find("CrouchingText");
+        if (text != null && text2 != null)
+        {
+            standingText = text.GetComponent<Canvas>();
+            crouchingText = text2.GetComponent<Canvas>();
+        }
+        else if (text == null || text2 == null)
+        {
+            Debug.Log("Could not find crouch text or standing text");
+        }
 
 	}
 	
@@ -43,6 +60,9 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+        Jump();
+
+        Debug.Log(jumped);
 
         moveSpeed = walkSpeed;
 
@@ -52,9 +72,28 @@ public class PlayerController : MonoBehaviour {
         xMove = Input.GetAxisRaw("Horizontal");
         zMove = Input.GetAxisRaw("Vertical");
 
-        Movement();
-        Jump();
+        if (grounded)
+        {
+            jumped = false;
+        }
+        else
+        {
+            jumped = true;
+        }
 
+        if (cc.height <= 2f && cc.height > 1)
+        {
+            crouchingText.enabled = false;
+            standingText.enabled = true;
+        }
+        else if (cc.height == 1f)
+        {
+            crouchingText.enabled = true;
+            standingText.enabled = false;
+        }
+
+        Movement();
+        
     }
 
     void Movement()
