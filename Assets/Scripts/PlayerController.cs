@@ -79,10 +79,10 @@ public class PlayerController : MonoBehaviour {
     void LookAround()
     {
 
-        //xLook = Mathf.Clamp(xLook, 290, 315);
+        xLook = Mathf.Clamp(xLook, -60, 60);
 
         transform.Rotate(0, yLook, 0); //Rotates player side to side
-        Camera.main.transform.rotation = Quaternion.Euler(xLook, 0, 0);//Rotates camera up and down
+        Camera.main.transform.localRotation = Quaternion.Euler(-xLook, 0, 0);//Rotates camera up and down
 
     }
 
