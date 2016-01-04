@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour {
     //Movement and Turning
     float xMove, zMove, verticalVel;
     float xLook, yLook, xLookTarget, yLookTarget;
-    public float moveSpeed, walkSpeed, runSpeed;
+    public float moveSpeed, walkSpeed, runSpeed, crouchSpeed;
     public float mouseSensX, mouseSensY;
 
     Vector3 targetSpeed, smoothMove;
@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour {
         {
             cc.height = 1f;
             jumpForce = crouchJump;
+            moveSpeed = crouchSpeed;
             if (jumped)
             {
                 cc.height = 2f;
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 4.5f); //Smoothly uncrouches the player
+            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 8); //Smoothly uncrouches the player
             jumpForce = standJump;
         }
 
