@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Crouch
-        if (Input.GetButton("Crouch"))
+        if (Input.GetButtonDown("Crouch"))
         {
 
             transform.position = new Vector3(transform.position.x, 2.4f, transform.position.z);
