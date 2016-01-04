@@ -8,22 +8,23 @@ public class PlayerController : MonoBehaviour {
     float xLook, yLook, xLookTarget, yLookTarget;
     public float moveSpeed, walkSpeed, runSpeed;
     public float mouseSensX, mouseSensY;
+
     Vector3 targetSpeed, smoothMove;
-    Vector3 ogPosition, crouchPosition;
+    Vector3 crouchPosition;
 
     CapsuleCollider cc;
 
     //Jump
     bool grounded;
-    public float jumpForce;
-
+    public float jumpForce, standJump, crouchJump;
+    bool jumped;
     Rigidbody rb;
 
 	// Use this for initialization
 	void Start ()
     {
 
-        ogPosition = transform.position;
+        jumpForce = standJump;
 
         cc = GetComponent<CapsuleCollider>();
 
@@ -68,10 +69,16 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButton("Crouch"))
         {
             cc.height = 1f;
+            jumpForce = crouchJump;
+            if (jumped)
+            {
+                cc.height = 2f;
+            }
         }
         else
         {
-            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 4.5f);
+            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 4.5f); //Smoothly uncrouches the player
+            jumpForce = standJump;
         }
 
         Vector3 speed = new Vector3(xMove, 0, zMove);
@@ -101,6 +108,7 @@ public class PlayerController : MonoBehaviour {
         //Player can only jump if he's touching the ground
         if (Input.GetButtonDown("Jump") && grounded)
         {
+            jumped = true;
             rb.velocity = new Vector3(0, jumpForce, 0);
             grounded = false;
         }
