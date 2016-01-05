@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     //Crouching
     Vector3 crouchPosition;
     public bool isCrouched;
+    float crouchHeight = 1f, standHeight = 2f;
 
     CapsuleCollider cc;
 
@@ -47,8 +48,6 @@ public class PlayerController : MonoBehaviour {
     {
         Jump();
 
-        Debug.Log(jumped);
-
         moveSpeed = walkSpeed;
 
         xLook += Input.GetAxis("Mouse Y") * mouseSensY * Time.deltaTime;
@@ -57,22 +56,11 @@ public class PlayerController : MonoBehaviour {
         xMove = Input.GetAxisRaw("Horizontal");
         zMove = Input.GetAxisRaw("Vertical");
 
-        if (grounded)
-        {
-            jumped = false;
-        }
-        else
-        {
-            jumped = true;
-        }
+        isCrouched = false;
 
-        if (cc.height <= 2f && cc.height > 1)
+        if (isCrouched && jumped)
         {
-            isCrouched = false;
-        }
-        else if (cc.height == 1f)
-        {
-            isCrouched = true;
+            cc.height = standHeight;
         }
 
         Movement();
@@ -93,10 +81,7 @@ public class PlayerController : MonoBehaviour {
             cc.height = 1f;
             jumpForce = crouchJump;
             moveSpeed = crouchSpeed;
-            if (jumped)
-            {
-                cc.height = 2f;
-            }
+            isCrouched = true;
         }
         else
         {
