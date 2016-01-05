@@ -8,9 +8,11 @@ public class PlayerController : MonoBehaviour {
     float xLook, yLook, xLookTarget, yLookTarget;
     public float moveSpeed, walkSpeed, runSpeed, crouchSpeed;
     public float mouseSensX, mouseSensY;
-
     Vector3 targetSpeed, smoothMove;
+
+    //Crouching
     Vector3 crouchPosition;
+    public bool isCrouched;
 
     CapsuleCollider cc;
 
@@ -19,11 +21,6 @@ public class PlayerController : MonoBehaviour {
     public float jumpForce, standJump, crouchJump;
     bool jumped;
     Rigidbody rb;
-
-    //UI
-    GameObject text, text2;
-    Canvas standingText;
-    Canvas crouchingText;
 
 	// Use this for initialization
 	void Start ()
@@ -35,18 +32,6 @@ public class PlayerController : MonoBehaviour {
 
         rb = GetComponent<Rigidbody>();
         moveSpeed = walkSpeed;
-
-        text = GameObject.Find("StandingText");
-        text2 = GameObject.Find("CrouchingText");
-        if (text != null && text2 != null)
-        {
-            standingText = text.GetComponent<Canvas>();
-            crouchingText = text2.GetComponent<Canvas>();
-        }
-        else if (text == null || text2 == null)
-        {
-            Debug.Log("Could not find crouch text or standing text");
-        }
 
 	}
 	
@@ -83,13 +68,11 @@ public class PlayerController : MonoBehaviour {
 
         if (cc.height <= 2f && cc.height > 1)
         {
-            crouchingText.enabled = false;
-            standingText.enabled = true;
+            isCrouched = false;
         }
         else if (cc.height == 1f)
         {
-            crouchingText.enabled = true;
-            standingText.enabled = false;
+            isCrouched = true;
         }
 
         Movement();

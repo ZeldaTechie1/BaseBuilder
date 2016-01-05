@@ -2877,7 +2877,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858451602}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e78c49750c9ec6d4fb31e7b55990fac4, type: 3}
+  m_Script: {fileID: 11500000, guid: 05f09444b2e8bde4f804210f6129ab98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InventoryMenu: {fileID: 2130280848}
@@ -2973,6 +2973,7 @@ MonoBehaviour:
   crouchSpeed: 15
   mouseSensX: 50
   mouseSensY: 50
+  isCrouched: 0
   jumpForce: 5
   standJump: 4
   crouchJump: 7
