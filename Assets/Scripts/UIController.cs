@@ -9,14 +9,13 @@ public class UIController : MonoBehaviour
     PlayerController playerController;
 
     // Pause
-    bool paused;
-    public Canvas InventoryMenu;
-    public Canvas SettingsMenu;
+    bool paused, controls;
+    public Canvas InventoryMenu, SettingsMenu, ControlsMenu;
+    public Text xSens, ySens, crouchText, standText, boostText;
 
     //HUD
     GameObject text, text2;
-    Canvas standingText;
-    Canvas crouchingText;
+    Canvas standingText, crouchingText;
 
     // Use this for initialization
     void Start()
@@ -26,7 +25,15 @@ public class UIController : MonoBehaviour
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
 
+        //Initial values to show for the sliders
+        xSens.text = "" + playerController.mouseSensX;
+        ySens.text = "" + playerController.mouseSensY;
+        crouchText.text = "" + playerController.crouchJump;
+        standText.text = "" + playerController.standJump;
+        boostText.text = "" + playerController.boostJump;
+
         SettingsMenu.enabled = false;
+        ControlsMenu.enabled = false;
 
         //Inventory menu
         InventoryMenu.enabled = false;
@@ -87,25 +94,59 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = (true);
-
-            InventoryMenu.enabled = true;
+            
+            InventoryMenu.enabled = true;           
         }
         if (!paused)
         {
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = (false);
-
+           
             InventoryMenu.enabled = false;
             SettingsMenu.enabled = false;
+            ControlsMenu.enabled = false;
         }
 
     }
 
     public void OpenSettingsMenu()
     {
-        InventoryMenu.enabled = false;
         SettingsMenu.enabled = true;
+        ControlsMenu.enabled = false;
+    }
+
+    public void OpenControlsMenu()
+    {
+        SettingsMenu.enabled = false;
+        ControlsMenu.enabled = true;
+    }
+
+    public void AdjustSensitivityX(float newSensX)
+    {
+        playerController.mouseSensX = newSensX;
+        xSens.text = "" + playerController.mouseSensX;
+    }
+    public void AdjustSensitivityY(float newSensY)
+    {
+        playerController.mouseSensY = newSensY;
+        ySens.text = "" + playerController.mouseSensY;
+    }
+
+    public void ChangeCrouchJump(float newCrouch)
+    {
+        playerController.crouchJump = newCrouch;
+        crouchText.text = "" + playerController.crouchJump;
+    }
+    public void ChangeStandJump(float newStand)
+    {
+        playerController.standJump = newStand;
+        standText.text = "" + playerController.standJump;
+    }
+    public void ChangeBoostJump(float newBoost)
+    {
+        playerController.boostJump = newBoost;
+        boostText.text = "" + playerController.boostJump;
     }
 
 }
