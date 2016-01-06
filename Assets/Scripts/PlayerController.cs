@@ -12,14 +12,14 @@ public class PlayerController : MonoBehaviour {
 
     //Crouching
     Vector3 crouchPosition;
-    public bool isCrouched;
+    public bool isCrouched, canCrouch;
     float crouchHeight = 1f, standHeight = 2f;
 
     CapsuleCollider cc;
 
     //Jump
     bool grounded;
-    public float jumpForce, standJump, crouchJump;
+    public float jumpForce, standJump, crouchJump, boostJump;
     bool jumped;
     Rigidbody rb;
 
@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         moveSpeed = walkSpeed;
 
+        canCrouch = true;
+
 	}
 	
 	// Update is called once per frame
@@ -46,9 +48,6 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-        Jump();
-
-        moveSpeed = walkSpeed;
 
         xLook += Input.GetAxis("Mouse Y") * mouseSensY * Time.deltaTime;
         yLook = Input.GetAxis("Mouse X") * mouseSensX * Time.deltaTime;
@@ -56,14 +55,19 @@ public class PlayerController : MonoBehaviour {
         xMove = Input.GetAxisRaw("Horizontal");
         zMove = Input.GetAxisRaw("Vertical");
 
-        isCrouched = false;
+        Debug.Log("isCrouched: " + isCrouched);
+        Debug.Log("Jumped: " + jumped);
+        Debug.Log("canCrouch: " + canCrouch);
 
-        if (isCrouched && jumped)
+        jumpForce = standJump;
+
+        if (cc.height > 1f && cc.height < 1.8)
         {
-            cc.height = standHeight;
+            jumpForce = boostJump;
         }
 
         Movement();
+        Jump();
         
     }
 
@@ -76,19 +80,20 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Crouch
-        if (Input.GetButton("Crouch"))
+        if (Input.GetButton("Crouch") && canCrouch)
         {
-            cc.height = 1f;
+            cc.height = Mathf.Lerp(cc.height, 1f, Time.deltaTime * 10); //Smoothly CROUCHES player
             jumpForce = crouchJump;
             moveSpeed = crouchSpeed;
             isCrouched = true;
         }
         else
         {
-            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 8); //Smoothly uncrouches the player
-            jumpForce = standJump;
+            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 2); //Smoothly UNCROUCHES player
+            moveSpeed = walkSpeed;
+            isCrouched = false;
         }
-
+        
         Vector3 speed = new Vector3(xMove, 0, zMove);
         speed.Normalize();
 
