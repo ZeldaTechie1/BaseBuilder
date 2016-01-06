@@ -14,8 +14,7 @@ public class UIController : MonoBehaviour
     public Text xSens, ySens, crouchText, standText, boostText;
 
     //HUD
-    GameObject text, text2;
-    Canvas standingText, crouchingText;
+    public Canvas StandingNotification, CrouchingNotification;
 
     // Use this for initialization
     void Start()
@@ -40,19 +39,8 @@ public class UIController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = (false);
 
-        //HUD stuff
-        text = GameObject.Find("StandingText");
-        text2 = GameObject.Find("CrouchingText");
-        if (text != null && text2 != null)
-        {
-            standingText = text.GetComponent<Canvas>();
-            crouchingText = text2.GetComponent<Canvas>();
-        }
-        else if (text == null || text2 == null)
-        {
-            Debug.Log("Could not find crouch text or standing text");
-        }
-
+        Debug.Log("Could not find crouch text or standing text");
+        
     }
 
     // Update is called once per frame
@@ -70,13 +58,13 @@ public class UIController : MonoBehaviour
         //notifies whether player is standing or crouching
         if (!playerController.isCrouched)
         {
-            crouchingText.enabled = false;
-            standingText.enabled = true;
+            CrouchingNotification.enabled = false;
+            StandingNotification.enabled = true;
         }
         else if (playerController.isCrouched)
         {
-            crouchingText.enabled = true;
-            standingText.enabled = false;
+            CrouchingNotification.enabled = true;
+            StandingNotification.enabled = false;
         }
 
     }

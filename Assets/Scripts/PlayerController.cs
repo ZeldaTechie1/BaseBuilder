@@ -4,16 +4,17 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     //Movement and Turning
-    float xMove, zMove, verticalVel;
-    float xLook, yLook, xLookTarget, yLookTarget;
-    public float walkSpeed, runSpeed, crouchSpeed;
+    private float xMove, zMove, verticalVel;
+    private float xLook, yLook, xLookTarget, yLookTarget;
+    public float currSpeed, walkSpeed, runSpeed, crouchSpeed;
     public float mouseSensX, mouseSensY;
     Vector3 targetSpeed, smoothMove;
+    private bool canSprint;
 
     //Crouching
     Vector3 crouchPosition;
     public bool isCrouched, canCrouch;
-    float crouchHeight = 1f, standHeight = 2f;
+    private float crouchHeight = 1f, standHeight = 2f;
 
     CapsuleCollider cc;
 
@@ -64,12 +65,15 @@ public class PlayerController : MonoBehaviour {
             jumpForce = boostJump;
         }
 
-        if(Input.GetButton("Sprint"))
+        if(Input.GetButton("Sprint") && canSprint)
         {
+            currSpeed = runSpeed;
             Movement(runSpeed);
         }
         else if (!isCrouched)
         {
+            currSpeed = walkSpeed;
+            canSprint = true;
             Movement(walkSpeed);
         }
 
@@ -122,13 +126,16 @@ public class PlayerController : MonoBehaviour {
         {
             cc.height = Mathf.Lerp(cc.height, crouchHeight, Time.deltaTime * 10); //Smoothly CROUCHES player
             jumpForce = crouchJump;
+            currSpeed = crouchSpeed;
             Movement(crouchSpeed);
             isCrouched = true;
+            canSprint = false;
         }
         else
         {
             cc.height = Mathf.Lerp(cc.height, standHeight, Time.deltaTime * 2); //Smoothly UNCROUCHES player
             isCrouched = false;
+            canSprint = true;
         }
     }
 
