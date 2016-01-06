@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour {
     //Movement and Turning
     float xMove, zMove, verticalVel;
     float xLook, yLook, xLookTarget, yLookTarget;
-    public float moveSpeed, walkSpeed, runSpeed, crouchSpeed;
+    public float walkSpeed, runSpeed, crouchSpeed;
     public float mouseSensX, mouseSensY;
     Vector3 targetSpeed, smoothMove;
 
@@ -30,9 +30,7 @@ public class PlayerController : MonoBehaviour {
         jumpForce = standJump;
 
         cc = GetComponent<CapsuleCollider>();
-
-        rb = GetComponent<Rigidbody>();
-        moveSpeed = walkSpeed;
+        rb = GetComponent<Rigidbody>();        
 
         canCrouch = true;
 
@@ -66,39 +64,28 @@ public class PlayerController : MonoBehaviour {
             jumpForce = boostJump;
         }
 
-        Movement();
+        if(Input.GetButton("Sprint"))
+        {
+            Movement(runSpeed);
+        }
+        else if (!isCrouched)
+        {
+            Movement(walkSpeed);
+        }
+
+        Crouch();
         Jump();
         
     }
 
-    void Movement()
+    void Movement(float _moveSpeed)
     {
-
-        if (Input.GetButton("Sprint"))
-        {
-            moveSpeed = runSpeed;
-        }
-
-        //Crouch
-        if (Input.GetButton("Crouch") && canCrouch)
-        {
-            cc.height = Mathf.Lerp(cc.height, 1f, Time.deltaTime * 10); //Smoothly CROUCHES player
-            jumpForce = crouchJump;
-            moveSpeed = crouchSpeed;
-            isCrouched = true;
-        }
-        else
-        {
-            cc.height = Mathf.Lerp(cc.height, 2f, Time.deltaTime * 2); //Smoothly UNCROUCHES player
-            moveSpeed = walkSpeed;
-            isCrouched = false;
-        }
         
         Vector3 speed = new Vector3(xMove, 0, zMove);
         speed.Normalize();
 
         speed = transform.rotation * speed;
-        targetSpeed = speed * moveSpeed;
+        targetSpeed = speed * _moveSpeed;
         speed = Vector3.SmoothDamp(speed, targetSpeed, ref smoothMove, .5f);
 
         rb.MovePosition(rb.position + speed * Time.fixedDeltaTime);
@@ -126,6 +113,23 @@ public class PlayerController : MonoBehaviour {
             grounded = false;
         }
 
+    }
+
+    void Crouch()
+    {
+        //Crouch
+        if (Input.GetButton("Crouch") && canCrouch)
+        {
+            cc.height = Mathf.Lerp(cc.height, crouchHeight, Time.deltaTime * 10); //Smoothly CROUCHES player
+            jumpForce = crouchJump;
+            Movement(crouchSpeed);
+            isCrouched = true;
+        }
+        else
+        {
+            cc.height = Mathf.Lerp(cc.height, standHeight, Time.deltaTime * 2); //Smoothly UNCROUCHES player
+            isCrouched = false;
+        }
     }
 
     void OnCollisionEnter (Collision other)

@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
     // Pause
     bool paused;
     public Canvas InventoryMenu;
+    public Canvas SettingsMenu;
 
     //HUD
     GameObject text, text2;
@@ -24,6 +25,8 @@ public class UIController : MonoBehaviour
         //Player scripts
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
+
+        SettingsMenu.enabled = false;
 
         //Inventory menu
         InventoryMenu.enabled = false;
@@ -49,7 +52,7 @@ public class UIController : MonoBehaviour
     void Update()
     {
 
-        Pause();
+        OpenPauseMenu();
         HUD();
 
     }
@@ -71,7 +74,7 @@ public class UIController : MonoBehaviour
 
     }
 
-    void Pause()
+    void OpenPauseMenu()
     {
 
         if (Input.GetButtonDown("Pause"))
@@ -94,8 +97,15 @@ public class UIController : MonoBehaviour
             Cursor.visible = (false);
 
             InventoryMenu.enabled = false;
+            SettingsMenu.enabled = false;
         }
 
+    }
+
+    public void OpenSettingsMenu()
+    {
+        InventoryMenu.enabled = false;
+        SettingsMenu.enabled = true;
     }
 
 }
