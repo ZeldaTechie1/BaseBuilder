@@ -6,7 +6,9 @@ public class PlayerController : MonoBehaviour {
     //Movement and Turning
     private float xMove, zMove, verticalVel;
     private float xLook, yLook, xLookTarget, yLookTarget;
-    public float currSpeed, walkSpeed, runSpeed, crouchSpeed;
+    [SerializeField]
+    private float currSpeed;
+    public float walkSpeed, runSpeed, crouchSpeed;
     public float mouseSensX, mouseSensY;
     Vector3 targetSpeed, smoothMove;
     private bool canSprint;
