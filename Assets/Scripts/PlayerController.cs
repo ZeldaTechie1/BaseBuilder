@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿//PROBLEMS TO FIX (FOR NOW): 
+//1. we need to make it so that you can't change speeds while youre in the air.
+
+using UnityEngine;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
@@ -11,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     public float walkSpeed, runSpeed, crouchSpeed;
     public float mouseSensX, mouseSensY;
     Vector3 targetSpeed, smoothMove;
-    private bool canSprint;
+    private bool canSprint, changeSpeed;
 
     //Crouching
     Vector3 crouchPosition;
