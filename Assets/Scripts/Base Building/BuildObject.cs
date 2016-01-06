@@ -6,6 +6,9 @@ public class BuildObject : MonoBehaviour {
 
     [SerializeField]
     GameObject snapPoint_go;
+    [SerializeField]
+    bool isPlaced;
+    bool isSnapped;
     public int dimX;
     public int dimY;
     public int dimZ;
@@ -56,4 +59,14 @@ public class BuildObject : MonoBehaviour {
         GameObject snap = Instantiate(snapPoint_go, newPosition, Quaternion.identity) as GameObject;
         snap.transform.SetParent(this.gameObject.transform);
     }
+
+    public void Snap(Vector3 direction)//moves the object towards the correct place to snap
+    {
+        if(!isPlaced && !isSnapped)
+        {
+            Vector3 newPosition = this.transform.position + direction;
+            this.transform.position = newPosition;
+        }
+    }
+
 }
