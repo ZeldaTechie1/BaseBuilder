@@ -5,17 +5,20 @@ public class TestMouse : MonoBehaviour {
 
     Camera viewCamera;
     public GameObject placeholder;
+    public float objectDistance;
 
 	// Use this for initialization
 	void Start () {
         viewCamera = Camera.main;
+        objectDistance = 10;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
         Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
-        Plane ground = new Plane(-viewCamera.transform.forward, Vector3.zero);
+        Vector3 planePos = viewCamera.transform.position + (viewCamera.transform.forward * objectDistance);
+        Plane ground = new Plane(-viewCamera.transform.forward, planePos);
         float rayDistance;
         Vector3 rawPosition;
 
@@ -27,6 +30,8 @@ public class TestMouse : MonoBehaviour {
             Debug.DrawLine(ray.origin, newPos, Color.green);
             placeholder.transform.position = newPos;
         }
+
+        objectDistance += Input.GetAxisRaw("Mouse ScrollWheel");
 
     }
 }
