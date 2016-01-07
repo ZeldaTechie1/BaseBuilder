@@ -6,6 +6,7 @@ public class BuildObject : MonoBehaviour {
 
     [SerializeField]
     GameObject snapPoint_go;
+    public GameObject Placeholder;
     public bool isPlaced;
     public bool snap;
     public int dimX;
@@ -50,11 +51,12 @@ public class BuildObject : MonoBehaviour {
 	void Update () {
        if(!snap)
         {
-            if(this.transform.parent !=null)
+            if(Placeholder !=null)
             {
-                if(transform.parent.tag == "Placeholder")
+                if(Placeholder.tag == "Placeholder")
                 {
-                    this.transform.position = transform.parent.position;
+                    this.transform.position = Placeholder.transform.position;
+                    this.transform.rotation = Placeholder.transform.rotation;
                 }
             }
         }

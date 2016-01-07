@@ -15,15 +15,11 @@ public class SnapPoint : MonoBehaviour {
     }
     void Update()
     {
-        if (parent.transform.parent != null && placeholder == null)
-            placeholder = parent.transform.parent.gameObject;
-        if (snap)
-        {
-            Snap(snapPos, this.transform.position);
-        }
+        if (parent.GetComponent<BuildObject>().Placeholder != null)
+            placeholder = parent.GetComponent<BuildObject>().Placeholder;
        if(placeholder != null)
         {
-            if(placeholder.tag == "Placeholder" && Vector3.Distance(parent.transform.position, placeholder.transform.position) > GetComponent<SphereCollider>().radius)
+            if(placeholder.tag == "Placeholder" && Vector3.Distance(parent.transform.position, placeholder.transform.position) > GetComponent<SphereCollider>().radius && snap)
             {
                 StopSnap();
                 Debug.Log("Poop");
@@ -33,7 +29,7 @@ public class SnapPoint : MonoBehaviour {
 
 	void OnTriggerEnter(Collider col)
     {
-        if(col.transform.tag == "SnapPoint" && !snap)
+        if(col.transform.tag == "SnapPoint" && !parent.GetComponent<BuildObject>().snap)
         {
             if(parent != null)
             {
@@ -44,31 +40,6 @@ public class SnapPoint : MonoBehaviour {
                         Vector3 distanceTo = col.transform.position;
                         snapPos = distanceTo;
                         Snap(distanceTo, this.transform.position);
-                    }
-                    else
-                    {
-                        Debug.LogError("This object isn't placed, please go away." + parent.name);
-                    }
-                }
-            }
-            else
-            {
-                Debug.LogError("This SnapPoint has no parent!");
-            }
-        }
-    }
-
-    void OnTriggerExit(Collider col)
-    {
-        if (col.transform.tag == "SnapPoint")
-        {
-            if (parent != null)
-            {
-                if (!parent.GetComponent<BuildObject>().isPlaced)
-                {
-                    if (col.transform.parent.GetComponent<BuildObject>().isPlaced && !parent.GetComponent<BuildObject>().isPlaced)
-                    {
-                        StopSnap();
                     }
                     else
                     {

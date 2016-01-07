@@ -6,13 +6,17 @@ public class TestMouse : MonoBehaviour {
     Camera viewCamera;
     public GameObject placeholder;
     public float objectDistance;
+    public float objectRotation;
     public float zoomSens;
+    public float rotSens;
 
     // Use this for initialization
     void Start () {
         viewCamera = Camera.main;
         objectDistance = 10;
+        objectRotation = 0;
         zoomSens = 10;
+        rotSens = 10;
 	}
 	
 	// Update is called once per frame
@@ -33,10 +37,19 @@ public class TestMouse : MonoBehaviour {
             placeholder.transform.position = newPos;
         }
 
-        if (objectDistance > 0)
-            objectDistance += Input.GetAxisRaw("Mouse ScrollWheel") * zoomSens;
+        if(!Input.GetButton("Left Shift"))
+        {
+            if (objectDistance > 0)
+                objectDistance += Input.GetAxisRaw("Mouse ScrollWheel") * zoomSens;
+            else
+                objectDistance = 1;
+        }
         else
-            objectDistance = 1;
-
+        {
+            Debug.Log("Rotating!");
+            objectRotation += Input.GetAxisRaw("Mouse ScrollWheel") * rotSens;
+        }
+        placeholder.transform.LookAt(viewCamera.transform);
+        placeholder.transform.rotation = Quaternion.Euler(placeholder.transform.localRotation.x, placeholder.transform.localRotation.y + objectRotation, placeholder.transform.localRotation.z);
     }
 }
