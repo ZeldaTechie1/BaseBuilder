@@ -7,7 +7,6 @@ public class SnapPoint : MonoBehaviour {
     public Vector3 snapPos;
     public GameObject parent;
     public GameObject placeholder;
-    public float zoomSens;
 
 
     void Start()
