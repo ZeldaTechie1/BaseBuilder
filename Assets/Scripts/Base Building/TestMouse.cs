@@ -6,11 +6,13 @@ public class TestMouse : MonoBehaviour {
     Camera viewCamera;
     public GameObject placeholder;
     public float objectDistance;
+    public float zoomSens;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         viewCamera = Camera.main;
         objectDistance = 10;
+        zoomSens = 10;
 	}
 	
 	// Update is called once per frame
@@ -31,7 +33,10 @@ public class TestMouse : MonoBehaviour {
             placeholder.transform.position = newPos;
         }
 
-        objectDistance += Input.GetAxisRaw("Mouse ScrollWheel");
+        if (objectDistance > 0)
+            objectDistance += Input.GetAxisRaw("Mouse ScrollWheel") * zoomSens;
+        else
+            objectDistance = 1;
 
     }
 }

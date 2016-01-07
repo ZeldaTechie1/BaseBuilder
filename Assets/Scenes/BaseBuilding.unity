@@ -597,3 +597,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placeholder: {fileID: 1727055320}
   objectDistance: 0
+  zoomSens: 0
