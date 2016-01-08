@@ -4,6 +4,9 @@
 //NOTE
 //-all inputs should be in update 
 //-we might want to switch camera movement to a seperate script
+//(ANTONIO's INPUT):
+//STILL NEEDED:
+//-combos 
 
 using UnityEngine;
 using System.Collections;
@@ -29,7 +32,7 @@ public class PlayerController : MonoBehaviour {
     private float crouchHeight = 1f, standHeight = 2f; //we should shrink from the bottom since in crouch the feet go up into the torso (allows jump crouch to work properly) *not sure if this does that
 
     //FUNCTION REQUIRED TO MANAGE THIS***
-    bool grounded; //only true when the "feet" of the collider are touching the floor
+    //bool grounded; //only true when the "feet" of the collider are touching the floor
         //BEST OPTION(bryan thinks): Check if the object has up and down momentum, if it doesnt then its grounded
             //Possible Issues:
                 //might be an issue when moving into crouch depending how its coded
@@ -73,11 +76,13 @@ public class PlayerController : MonoBehaviour {
 
     void Update()//called once per frame
     {
+        Grounded();
+
         xLook += Input.GetAxis("Mouse Y") * mouseSensY * Time.deltaTime;
         yLook = Input.GetAxis("Mouse X") * mouseSensX * Time.deltaTime;
 
-        xMove = Input.GetAxisRaw("Horizontal");
-        zMove = Input.GetAxisRaw("Vertical");
+        xMove = Input.GetAxisRaw("Horizontal") * Time.deltaTime;
+        zMove = Input.GetAxisRaw("Vertical") * Time.deltaTime;
 
         //Debug.Log("isCrouched: " + isCrouched);
 
@@ -106,15 +111,15 @@ public class PlayerController : MonoBehaviour {
                 Note: Run and Jump dont do anything here
         */
 
-        grounded=true;//WILL OBVIOUSLY CAUSE ISSUES - I placed this here to atleast be able to get something done until you get the grounded function done which btw should be placed here
-
         //NOTE: GetButton is constantly checking if the button is down; GetButtonDown on checks if its tapped
 
         //MODIFY SLIGHTLY TO USE THE ACTIVE BUTTON THING - if you need me to explain why @antonio give me a call
-        if(grounded==true)
+        if(Grounded())
         {
             if (Input.GetButtonDown("Jump")) //doesnt require an active button change because will now NOT be grounded (maybe an exception but I dont think so)
+            {
                 Jump();
+            }
             else if (Input.GetButton("Run")) //should also change the active button to run
             {
                 Run();
@@ -122,12 +127,15 @@ public class PlayerController : MonoBehaviour {
                     Slide();
             }
             else if (Input.GetButton("Crouch")) //should also change the active button to crouch
+            {
                 Crouch();
+            }
             else
                 Move(walkSpeed);
         }
         else
         {
+            Move(walkSpeed);
             //once you finish the grounded function you can start building this with the logic tree above @antonio
         }
 
@@ -146,9 +154,18 @@ public class PlayerController : MonoBehaviour {
         transform.Rotate(0, yLook, 0); //Rotates player side to side
     }
 
-    void Grounded()
+    bool Grounded()
     {
-
+        //Grounded
+        if (rb.velocity.y == 0)
+        {
+            return true;
+        }
+        //Not grounded
+        else
+        {
+            return false;
+        }
     }
 
     //Bryan Checkpoint---Plz no erase, thank ju!
@@ -179,6 +196,7 @@ public class PlayerController : MonoBehaviour {
 
     void Crouch() //WORRY ABOUT THIS LAST @antonio - I rather take care of it
     {
+        Debug.Log("CROUCH");
         Move(crouchSpeed);
         //NOT-DONE
     }
@@ -187,17 +205,17 @@ public class PlayerController : MonoBehaviour {
 
     void Slide()
     {
-
+        Debug.Log("SLIDE");
     }
 
     void HighJump()
     {
-
+        Debug.Log("HIGH JUMP");
     }
 
     void Roll()
     {
-
+        Debug.Log("ROLL");
     }
 
 }
