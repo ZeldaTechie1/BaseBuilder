@@ -56,6 +56,7 @@ public class UIController : MonoBehaviour
     {
 
         //notifies whether player is standing or crouching
+        /*
         if (!playerController.isCrouched)
         {
             CrouchingNotification.enabled = false;
@@ -66,6 +67,7 @@ public class UIController : MonoBehaviour
             CrouchingNotification.enabled = true;
             StandingNotification.enabled = false;
         }
+        */
 
     }
 
