@@ -11,8 +11,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
 
     //Movement
     private float xMove, zMove;
@@ -34,27 +33,27 @@ public class PlayerController : MonoBehaviour
 
     //FUNCTION REQUIRED TO MANAGE THIS***
     //bool grounded; //only true when the "feet" of the collider are touching the floor
-    //BEST OPTION(bryan thinks): Check if the object has up and down momentum, if it doesnt then its grounded
-    //Possible Issues:
-    //might be an issue when moving into crouch depending how its coded
-    //2nd Option: RayCasting: shot a ray and measure its distance and if its smaller than a value then register as grounded
-    //Possible Issues:
-    //If you are on an edge it will register as not grounded if we shot the ray from the center which will cause bugs within the logic tree
-    //ELSE
-    //not sure how stairs will register, might have to make the raycast detect bigger than the vertical size of one single stair level
-    //this might cause further bugs because it will register as not grounded when about to reach the floor which will let you double jump if your precise enough               
+        //BEST OPTION(bryan thinks): Check if the object has up and down momentum, if it doesnt then its grounded
+            //Possible Issues:
+                //might be an issue when moving into crouch depending how its coded
+        //2nd Option: RayCasting: shot a ray and measure its distance and if its smaller than a value then register as grounded
+            //Possible Issues:
+                //If you are on an edge it will register as not grounded if we shot the ray from the center which will cause bugs within the logic tree
+                //ELSE
+                    //not sure how stairs will register, might have to make the raycast detect bigger than the vertical size of one single stair level
+                        //this might cause further bugs because it will register as not grounded when about to reach the floor which will let you double jump if your precise enough               
 
     public float jumpForce, standJump, crouchJump, boostJump;//not sure if any of this is needed
 
     CapsuleCollider cc;
     Rigidbody rb;
 
-    // Use this for initialization
-    void Start()
+	// Use this for initialization
+	void Start ()
     {
         cc = GetComponent<CapsuleCollider>();
-        rb = GetComponent<Rigidbody>();
-    }
+        rb = GetComponent<Rigidbody>();        
+	}
 
     //link for more info on different updates
     //http://docs.unity3d.com/Manual/ExecutionOrder.html
@@ -66,7 +65,7 @@ public class PlayerController : MonoBehaviour
     //doesnt reqire multiplication by deltaTime
     //can be called multiple times per frame
     void FixedUpdate()//udpate NOT reliant on framerate but with a reliable timeer
-    {
+    {   
     }
 
     //shoud be used for camera movements
@@ -115,7 +114,7 @@ public class PlayerController : MonoBehaviour
         //NOTE: GetButton is constantly checking if the button is down; GetButtonDown on checks if its tapped
 
         //MODIFY SLIGHTLY TO USE THE ACTIVE BUTTON THING - if you need me to explain why @antonio give me a call
-        if (Grounded())
+        if(Grounded())
         {
             if (Input.GetButtonDown("Jump")) //doesnt require an active button change because will now NOT be grounded (maybe an exception but I dont think so)
             {
@@ -172,7 +171,7 @@ public class PlayerController : MonoBehaviour
     //Bryan Checkpoint---Plz no erase, thank ju!
 
     void Move(float _moveSpeed) //seems to be working fine
-    {
+    { 
         Vector3 speed = new Vector3(xMove, 0, zMove);
         speed.Normalize();
 

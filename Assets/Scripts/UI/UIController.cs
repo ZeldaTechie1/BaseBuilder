@@ -40,7 +40,7 @@ public class UIController : MonoBehaviour
         Cursor.visible = (false);
 
         Debug.Log("Could not find crouch text or standing text");
-
+        
     }
 
     // Update is called once per frame
@@ -84,15 +84,15 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = (true);
-
-            InventoryMenu.enabled = true;
+            
+            InventoryMenu.enabled = true;           
         }
         if (!paused)
         {
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = (false);
-
+           
             InventoryMenu.enabled = false;
             SettingsMenu.enabled = false;
             ControlsMenu.enabled = false;
