@@ -9,7 +9,7 @@ public class ItemDatabase : MonoBehaviour {
     private JsonData itemData;
 
     void Start() {
-        itemData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Inventory/StreamingAssets/Items.json"));
+        itemData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/Items.json"));
         ConstructItemDatabase();
     }
 
@@ -23,7 +23,7 @@ public class ItemDatabase : MonoBehaviour {
     void ConstructItemDatabase() {
         for (int i = 0; i < itemData.Count; i++) {
             database.Add(new Item((int)itemData[i]["id"], itemData[i]["title"].ToString(), (int)itemData[i]["value"],
-            (int)itemData[i]["stats"]["strength"], (int)itemData[i]["stats"]["defence"], (int)itemData[i]["stats"]["damage"], 
+            (int)itemData[i]["attributes"]["strength"], (int)itemData[i]["attributes"]["defence"], (int)itemData[i]["attributes"]["damage"], 
             itemData[i]["description"].ToString(), (bool)itemData[i]["stackable"], (int)itemData[i]["rarity"], itemData[i]["slug"].ToString()));
         }
     }
@@ -53,7 +53,7 @@ public class Item {
         this.Stackable = stackable;
         this.Rarity = rarity;
         this.Slug = slug;
-        this.Sprite = Resources.Load<Sprite>("Sprites/Items/" + slug);
+        this.Sprite = Resources.Load<Sprite>("Sprites/Inventory/Items/" + slug);
     }
 
     public Item(int id, string title) {

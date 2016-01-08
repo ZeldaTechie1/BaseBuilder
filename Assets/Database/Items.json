@@ -3,7 +3,7 @@
         "id": 0,
         "title": "Dark Repulser Sword",
         "value": 5,
-        "stats": {
+        "attributes": {
             "strength": 30,
             "defence": 0,
             "damage": 50
@@ -17,7 +17,7 @@
         "id": 1,
         "title": "Wood",
         "value": 5,
-        "stats": {
+        "attributes": {
             "strength": 10,
             "defence": 0,
             "damage": 30

@@ -74,6 +74,7 @@ public class Inventory : MonoBehaviour {
         {
             if(items[i].ID == item.ID)
             {
+                //Debug.Log("Item exists and has a copy!");
                 location = i;
                 return true;
             }

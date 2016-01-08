@@ -17,6 +17,13 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     }
 
     public void OnPointerDown(PointerEventData eventData) {
+        if (item != null && item.Stackable)
+        {
+            Debug.Log("Consume Item!");
+        }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData) {
         if (item != null)
         {
             offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
@@ -24,15 +31,6 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             this.transform.position = eventData.position - offset;
             GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-       /* if(item != null)
-        {
-            offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
-            
-        }*/
     }
 
     public void OnDrag(PointerEventData eventData) {
@@ -47,8 +45,6 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         this.transform.position = inv.slots[slotLocation].transform.position;
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
-
-
 
     public void OnPointerEnter(PointerEventData eventData) {
         tooltip.Activate(this.item);
