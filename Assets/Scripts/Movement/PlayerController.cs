@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour {
                 if (Input.GetButton("Crouch")) //it should only slide the first time its tapped, if its pressed continually it will be ignored
                 {
                     heldDownTimer += Time.deltaTime;
-                    if (heldDownTimer >= Time.deltaTime * 10f)
+                    if (heldDownTimer <= Time.deltaTime * 10f)
                     {
                         Slide();
                     }
