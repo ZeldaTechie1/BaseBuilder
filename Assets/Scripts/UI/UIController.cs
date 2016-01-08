@@ -9,8 +9,9 @@ public class UIController : MonoBehaviour
     PlayerController playerController;
 
     // Pause
-    bool paused, controls;
-    public Canvas InventoryMenu, SettingsMenu, ControlsMenu;
+    bool paused, inv, settings, controls;
+    public Canvas Menu;
+    public GameObject InventoryMenu, SettingsMenu, ControlsMenu;
     public Text xSens, ySens, crouchText, standText, boostText;
 
     //HUD
@@ -31,11 +32,15 @@ public class UIController : MonoBehaviour
         standText.text = "" + playerController.standJump;
         boostText.text = "" + playerController.boostJump;
 
-        SettingsMenu.enabled = false;
-        ControlsMenu.enabled = false;
+        SettingsMenu.SetActive(false);
+        ControlsMenu.SetActive(false);
 
         //Inventory menu
-        InventoryMenu.enabled = false;
+        Menu.enabled = false;
+        controls = false;
+        inv = false;
+        settings = false;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = (false);
 
@@ -77,6 +82,10 @@ public class UIController : MonoBehaviour
         if (Input.GetButtonDown("Pause"))
         {
             paused = !paused;
+            if(paused == true)
+            {
+                inv = true;
+            }
         }
         if (paused)
         {
@@ -85,31 +94,66 @@ public class UIController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = (true);
             
-            InventoryMenu.enabled = true;           
+            if(!InventoryMenu.activeSelf && inv == true)
+            {
+                InventoryMenu.SetActive(true);
+                controls = false;
+                settings = false;
+            }
+            if(controls || settings)
+            {
+                InventoryMenu.SetActive(false);
+            }
+            Menu.enabled = true;
         }
         if (!paused)
         {
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = (false);
-           
-            InventoryMenu.enabled = false;
-            SettingsMenu.enabled = false;
-            ControlsMenu.enabled = false;
+
+            Menu.enabled = false;
+            SettingsMenu.SetActive(false);
+            ControlsMenu.SetActive(false);
         }
 
     }
 
     public void OpenSettingsMenu()
     {
-        SettingsMenu.enabled = true;
-        ControlsMenu.enabled = false;
+        Debug.Log("Settings Menu.");
+        SettingsMenu.SetActive(true);
+        ControlsMenu.SetActive(false);
+        InventoryMenu.SetActive(false);
+
+        settings = true;
+        controls = false;
+        inv = false;
     }
 
     public void OpenControlsMenu()
     {
-        SettingsMenu.enabled = false;
-        ControlsMenu.enabled = true;
+        Debug.Log("Control Menu.");
+        SettingsMenu.SetActive(false);
+        ControlsMenu.SetActive(true);
+        InventoryMenu.SetActive(false);
+
+        settings = false;
+        controls = true;
+        inv = false;
+        
+    }
+
+    public void OpenInventoryMenu()
+    {
+        Debug.Log("Inventory Menu.");
+        SettingsMenu.SetActive(false);
+        ControlsMenu.SetActive(false);
+        InventoryMenu.SetActive(true);
+
+        settings = false;
+        controls = false;
+        inv = true;
     }
 
     public void AdjustSensitivityX(float newSensX)
