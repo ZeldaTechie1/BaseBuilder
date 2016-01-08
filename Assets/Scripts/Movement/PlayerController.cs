@@ -13,6 +13,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+    public float heldDownTimer;
+
     //Movement
     private float xMove, zMove;
 
@@ -45,13 +47,11 @@ public class PlayerController : MonoBehaviour {
 
     public float jumpForce, standJump, crouchJump, boostJump;//not sure if any of this is needed
 
-    CapsuleCollider cc;
     Rigidbody rb;
 
 	// Use this for initialization
 	void Start ()
     {
-        cc = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();        
 	}
 
@@ -123,20 +123,38 @@ public class PlayerController : MonoBehaviour {
             else if (Input.GetButton("Run")) //should also change the active button to run
             {
                 Run();
-                if (Input.GetButtonDown("Crouch")) //it should only slide the first time its tapped, if its pressed continually it will be ignored
-                    Slide();
+                if (Input.GetButton("Crouch")) //it should only slide the first time its tapped, if its pressed continually it will be ignored
+                {
+                    heldDownTimer += Time.deltaTime;
+                    if (heldDownTimer >= Time.deltaTime * 10f)
+                    {
+                        Slide();
+                    }
+                    else
+                    {
+                        Crouch();
+                    }
+                }
+                else
+                {
+                    heldDownTimer = 0;
+                }
             }
             else if (Input.GetButton("Crouch")) //should also change the active button to crouch
             {
                 Crouch();
             }
             else
+            {
+                heldDownTimer = 0;
                 Move(walkSpeed);
+            }
         }
         else
         {
             Move(walkSpeed);
-            //once you finish the grounded function you can start building this with the logic tree above @antonio
+            
+
         }
 
 

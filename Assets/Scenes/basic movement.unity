@@ -4413,9 +4413,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf8e86da9f81661429f051825567006f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heldDownTimer: 0
   crouchSpeed: 25
   walkSpeed: 100
-  runSpeed: 250
+  runSpeed: 150
   mouseSensX: 50
   mouseSensY: 50
   jumpForce: 5
