@@ -20,6 +20,13 @@ public class ItemDatabase : MonoBehaviour {
         return null;
     }
 
+    public Item FetchItemByName(string name) {
+        for (int i = 0; i < database.Count; i++)
+            if (database[i].Slug == name)
+                return database[i];
+        return null;
+    }
+
     void ConstructItemDatabase() {
         for (int i = 0; i < itemData.Count; i++) {
             database.Add(new Item((int)itemData[i]["id"], itemData[i]["title"].ToString(), (int)itemData[i]["value"],

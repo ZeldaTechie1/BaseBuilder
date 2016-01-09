@@ -1,7 +1,7 @@
 [
     {
         "id": 0,
-        "title": "Dark Repulser Sword",
+        "title": "Woden Sword",
         "value": 5,
         "attributes": {
             "strength": 30,
@@ -11,21 +11,21 @@
         "description": "Its a sword!",
         "stackable": false,
         "rarity": 1,
-        "slug": "dark_repulser"
+        "slug": "sword"
     },
     {
         "id": 1,
-        "title": "Wood",
+        "title": "Wooden Plank",
         "value": 5,
         "attributes": {
             "strength": 10,
             "defence": 0,
-            "damage": 30
+            "damage": 0
         },
         "description": "This is used in crafting.",
         "stackable": true,
         "rarity": 1,
-        "slug": "wood"
+        "slug": "wooden_plank"
     }
 
 ]

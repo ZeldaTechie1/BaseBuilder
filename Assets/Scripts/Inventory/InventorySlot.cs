@@ -14,14 +14,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler {
         ItemData dropItem = eventData.pointerDrag.GetComponent<ItemData>();
         if(inv.items[id].ID == -1)
         {
-            Debug.Log("Item moved to empty space!");
+            Debug.Log("Item was moved to an empty space.");
             inv.items[dropItem.slotLocation] = new Item();
             inv.items[id] = dropItem.item;
             dropItem.slotLocation = id;
         }
         else if(dropItem.slotLocation != id && dropItem.slotLocation != -1)
         {
-            Debug.Log("Item swapped!");
+            Debug.Log("Item was swapped with another item.");
             Transform item = this.transform.GetChild(0);
             item.GetComponent<ItemData>().slotLocation = dropItem.slotLocation;
             item.transform.SetParent(inv.slots[dropItem.slotLocation].transform);
@@ -36,7 +36,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler {
         }
         else
         {
-            Debug.Log("Moving Item to same slot it was already in...?");
+            Debug.Log("Attempting to move Item to same slot it was already in...not so smart.");
         }
     }
 }
