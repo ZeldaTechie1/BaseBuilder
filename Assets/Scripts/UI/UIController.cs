@@ -15,7 +15,7 @@ public class UIController : MonoBehaviour
     public Text xSens, ySens, crouchText, standText, boostText;
 
     //HUD
-    public Canvas StandingNotification, CrouchingNotification;
+    public Canvas GroundedNotification, ActiveNotification;
 
     // Use this for initialization
     void Start()
@@ -28,9 +28,6 @@ public class UIController : MonoBehaviour
         //Initial values to show for the sliders
         xSens.text = "" + playerController.mouseSensX;
         ySens.text = "" + playerController.mouseSensY;
-        crouchText.text = "" + playerController.crouchJump;
-        standText.text = "" + playerController.standJump;
-        boostText.text = "" + playerController.boostJump;
 
         SettingsMenu.SetActive(false);
         ControlsMenu.SetActive(false);
@@ -42,10 +39,7 @@ public class UIController : MonoBehaviour
         settings = false;
 
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = (false);
-
-        Debug.Log("Could not find crouch text or standing text");
-        
+        Cursor.visible = (false);        
     }
 
     // Update is called once per frame
@@ -59,21 +53,10 @@ public class UIController : MonoBehaviour
 
     void HUD()
     {
-
-        //notifies whether player is standing or crouching
-        /*
-        if (!playerController.isCrouched)
-        {
-            CrouchingNotification.enabled = false;
-            StandingNotification.enabled = true;
-        }
-        else if (playerController.isCrouched)
-        {
-            CrouchingNotification.enabled = true;
-            StandingNotification.enabled = false;
-        }
-        */
-
+        if (playerController.Grounded())
+            GroundedNotification.enabled = true;
+        else
+            GroundedNotification.enabled = false;
     }
 
     void OpenPauseMenu()
@@ -165,22 +148,6 @@ public class UIController : MonoBehaviour
     {
         playerController.mouseSensY = newSensY;
         ySens.text = "" + playerController.mouseSensY;
-    }
-
-    public void ChangeCrouchJump(float newCrouch)
-    {
-        playerController.crouchJump = newCrouch;
-        crouchText.text = "" + playerController.crouchJump;
-    }
-    public void ChangeStandJump(float newStand)
-    {
-        playerController.standJump = newStand;
-        standText.text = "" + playerController.standJump;
-    }
-    public void ChangeBoostJump(float newBoost)
-    {
-        playerController.boostJump = newBoost;
-        boostText.text = "" + playerController.boostJump;
     }
 
 }
