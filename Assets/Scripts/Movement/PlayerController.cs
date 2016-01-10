@@ -32,13 +32,20 @@ public class PlayerController : MonoBehaviour {
 
     CapsuleCollider cc;
     Rigidbody rb;
+    SphereCollider sc;
+    Camera cam;
+
+    public bool grounded = true;
 
 	// Use this for initialization
 	void Start ()
     {
-        cc = GetComponent<CapsuleCollider>();
-        rb = GetComponent<Rigidbody>();        
-	}
+        cc = GameObject.Find("Player Physics").GetComponent<CapsuleCollider>();
+        sc = GameObject.Find("Player Physics").GetComponent<SphereCollider>();
+        rb = GameObject.Find("Player Physics").GetComponent<Rigidbody>();
+
+        cam = GameObject.Find("Player Camera").GetComponent<Camera>();
+    }
 
     //link for more info on different updates
     //http://docs.unity3d.com/Manual/ExecutionOrder.html
@@ -65,7 +72,7 @@ public class PlayerController : MonoBehaviour {
         //NOTE: GetButton is constantly checking if the button is down; GetButtonDown on checks if its tapped
 
         //MODIFY SLIGHTLY TO USE THE ACTIVE BUTTON THING - if you need me to explain why @antonio give me a call
-        if(Grounded()==true)
+        if(grounded)
         {
 
             if (Input.GetButtonDown("Jump") && (active== "null" || active == "Jump")) 
@@ -108,6 +115,7 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
+            
             if (Input.GetButton("Crouch"))
             {
                 active = "Crouch"; //kinda feel an issue in my head to transition between crouch in air and not in air... idk maybe...
@@ -119,32 +127,15 @@ public class PlayerController : MonoBehaviour {
                 active = "null";
                 Walk();
             }
+            
         }
 
-        Debug.Log("Grounded: "+Grounded()+" : " + rb.velocity.y + " ||| Active: "+active);
+        Debug.Log("Grounded: "+grounded+" ||| Active: "+active);
     }        
-
-    //USE A SPHERECAST!!!
-    //NEEDS TO BE CHANGED... this fluctuates too much for reasons I cant explain
-    public bool Grounded() //WORKS FOR NOW - Issues: 1. Not working in stairs when you are going up (Requires range i beleive)(could also disguish ramps as stairs then add head bob) 2. wont work in staris even when still for idk why... 
-    {
-        //doesnt work rn
-
-        /*
-        RaycastHit _hitInfo;
-        bool temp = Physics.SphereCast(rb.centerOfMass, 2, -transform.up, out _hitInfo, Mathf.Infinity);
-        Debug.Log(_hitInfo.distance);
-        if (_hitInfo.distance < .1)
-            return true;
-        else
-            return false;
-        */
-
-        return true; //for testing
-    }
 
     void LookAround()
     {
+        
         //***might want to add smoothing on a spectrum
         //For Example: if a camera movement is faster than a certain speed the camera lags behind becasue a human cant do a 720 spin in 1 second
         //***might want to add a button for a quick 180 to quickly get to enemies behind you
@@ -159,17 +150,24 @@ public class PlayerController : MonoBehaviour {
         xLook += Input.GetAxis("Mouse Y") * mouseSensX;
         xLook = Mathf.Clamp(xLook, -60, 60); //limits how far up or down the player can look
 
-        Camera.main.transform.localRotation = Quaternion.Euler(-xLook, 0, 0);
+        cam.transform.localRotation = Quaternion.Euler(-xLook, 0, 0);
+        
     }
 
     //Add smooth stopping and acceleration MAYBE (for realisms sake)
     void Move(float _moveSpeed)
     {
+        
         float _xMove = Input.GetAxis("Horizontal");
         float _zMove = Input.GetAxis("Vertical");
 
-        Vector3 _movHori = transform.right * _xMove;
-        Vector3 _movVerti = transform.forward * _zMove;
+        /*
+        rb.AddForce(new Vector3(-_zMove,0f,0f)*_moveSpeed, ForceMode.Impulse);
+        rb.AddForce(new Vector3(0f, 0f, _xMove) * _moveSpeed, ForceMode.Impulse);
+        */
+        
+        Vector3 _movHori = rb.velocity * _xMove; //use velcities here for no jitter
+        Vector3 _movVerti = rb.transform.forward * _zMove;
 
         Vector3 _velocity = (_movHori + _movVerti).normalized * _moveSpeed; //get direction and then multiply that direction by speed
         
@@ -198,7 +196,7 @@ public class PlayerController : MonoBehaviour {
 
     void Jump()
     {
-        rb.velocity = new Vector3(0, jumpForce, 0); //still falling to the ground way to slowly
+        rb.AddForce((transform.up * jumpForce), ForceMode.Impulse); //its slowing down to walking speed in the air
     }
 
     void Crouch() //WORRY ABOUT THIS LAST @antonio - I rather take care of it
@@ -216,7 +214,7 @@ public class PlayerController : MonoBehaviour {
 
     void HighJump()
     {
-        rb.velocity = new Vector3(0, jumpForce*10, 0);
+        rb.AddForce(new Vector3(0f, jumpForce*5, 0f), ForceMode.Impulse);
     }
 
     void Roll()

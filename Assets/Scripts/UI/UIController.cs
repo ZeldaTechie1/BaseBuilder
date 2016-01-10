@@ -53,10 +53,12 @@ public class UIController : MonoBehaviour
 
     void HUD()
     {
+        /*
         if (playerController.Grounded())
             GroundedNotification.enabled = true;
         else
             GroundedNotification.enabled = false;
+        */
     }
 
     void OpenPauseMenu()
