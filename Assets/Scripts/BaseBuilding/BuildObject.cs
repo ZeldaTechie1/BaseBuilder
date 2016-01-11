@@ -6,6 +6,9 @@ public class BuildObject : MonoBehaviour {
 
     [SerializeField]
     GameObject snapPoint_go;
+    public GameObject Placeholder;
+    public bool isPlaced;
+    public bool snap;
     public int dimX;
     public int dimY;
     public int dimZ;
@@ -46,14 +49,36 @@ public class BuildObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+       if(!snap)
+        {
+            if(Placeholder !=null)
+            {
+                if(Placeholder.tag == "Placeholder")
+                {
+                    this.transform.position = Placeholder.transform.position;
+                    this.transform.rotation = Placeholder.transform.rotation;
+                }
+            }
+        }
 	}
 
     void SpawnSnapPoint(int count, float x, float y, float z)
     {
-        Vector3 curPosition = transform.position;
-        Vector3 newPosition = new Vector3(x,y,z);
-        GameObject snap = Instantiate(snapPoint_go, newPosition, Quaternion.identity) as GameObject;
+        Vector3 position = new Vector3(x,y,z);
+        GameObject snap = Instantiate(snapPoint_go, position, Quaternion.identity) as GameObject;
         snap.transform.SetParent(this.gameObject.transform);
+    }
+
+    public void Snap(Vector3 position, Vector3 pointPosition)//moves the object towards the correct place to snap
+    {
+        if(snap)
+        {
+            Debug.Log("Boop");
+            Vector3 direction = position - pointPosition;
+            Vector3 newPosition = this.transform.position + direction;
+            this.transform.position = newPosition;
+        }
+        
+
     }
 }
