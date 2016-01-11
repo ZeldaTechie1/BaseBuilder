@@ -15,12 +15,18 @@ public class GroundedCheck : MonoBehaviour {
 
     void OnTriggerExit(Collider other)
     {
-        gameObject.GetComponentInParent<PlayerController>().grounded = false;
+        //adds a delay of .2 seconds
+        Invoke("unGround", 0.2f);
     }
 
     void OnTriggerStay(Collider other)
     {
         gameObject.GetComponentInParent<PlayerController>().grounded = true;
-        //Debug.Log(other.name);
+
+    }
+
+    void unGround()
+    {
+        gameObject.GetComponentInParent<PlayerController>().grounded = false;
     }
 }
