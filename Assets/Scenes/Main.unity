@@ -4721,8 +4721,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ceb49f885fab4cbb694fd1cfe1f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensX: 5
-  mouseSensY: 5
+  mouseSensX: 3
+  mouseSensY: 3
   xLook: 0
   yLook: 0
   mouseSmoothTime: .100000001

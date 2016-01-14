@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour {
     //Speed-stuff
     [SerializeField]
     public float crouchSpeed, walkSpeed, runSpeed;
-    Vector3 _velocity, _movHori, _movVerti;
+    Vector3 targetVel;
     float _xMove, _zMove;
     float maxChange = 20f;
 
@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour {
     //can be called multiple times per frame
     void FixedUpdate()//udpate NOT reliant on framerate but with a reliable timer
     {
-
     }
 
     void Update()//called once per frame
@@ -75,12 +74,12 @@ public class PlayerController : MonoBehaviour {
         //MODIFY SLIGHTLY TO USE THE ACTIVE BUTTON THING - if you need me to explain why @antonio give me a call
         if (grounded)
         {
-            if (Input.GetButtonDown("Jump") && (active == "null" || active == "Jump"))
+            if (Input.GetButtonDown("Jump"))// && (active == "null" || active == "Jump"))
             {
                 active = "Jump";
                 Jump();
             }
-            else if (Input.GetButton("Run") && (active == "null" || active == "Run"))
+            else if (Input.GetButton("Run"))// && (active == "null" || active == "Run"))
             {
                 active = "Run";
                 Run();
@@ -89,7 +88,7 @@ public class PlayerController : MonoBehaviour {
                 else if (Input.GetButtonDown("Jump"))
                     Jump();//Run Jump
             }
-            else if (Input.GetButton("Crouch") && (active == "null" || active == "Crouch"))
+            else if (Input.GetButton("Crouch"))//&& (active == "null" || active == "Crouch"))
             {
                 active = "Crouch";
                 Crouch();
@@ -97,36 +96,24 @@ public class PlayerController : MonoBehaviour {
                     HighJump();
                 else if (Input.GetButtonDown("Run"))
                     Roll();
-                else
-                {
-                    active = "null";
-                    Walk();
-                }
+
             }
-
-            //This piece would be to lean to either side 
-            //at the moment it doesnt exclude anything so it works all the time (easily fixable)
-            //In my opinion this should only work when you are grounded && (Runing[Maybe], standing[yes], crouching[yes]) - Suggest this stay here for now
-            if (Input.GetButton("leanLeft"))
+            else if (Input.GetButton("leanLeft"))
+            {
                 Lean("left");
+            }
             else if (Input.GetButton("leanRight"))
+            {
                 Lean("right");
-
+            }
             else
             {
-                if (Input.GetButton("Crouch"))
-                {
-                    active = "Crouch"; //kinda feel an issue in my head to transition between crouch in air and not in air... idk maybe...
-                                       //Crouch without reducing your speed
-                    Walk();
-                }
-                else
-                {
-                    active = "null";
-                    Walk();
-                }
-
+                active = "null";
+                Walk();
             }
+            //This piece would be to lean to either side 
+            //at the moment it doesnt exclude anything so it works all the time (easily fixable)
+            //In my opinion this should only work when you are grounded && (Runing[Maybe], standing[yes], crouching[yes]) - Suggest this stay here for now          
         }
         Debug.Log("Grounded: "+grounded+" ||| Active: "+active);
     }        
@@ -134,45 +121,34 @@ public class PlayerController : MonoBehaviour {
     //Add smooth stopping and acceleration MAYBE (for realisms sake)
     void Move(float _moveSpeed)
     {
-        //POSSIBLE SOLUTION FOR BETTER MOVEMENT (CAUSES JITTER WHEN SPRINT BUTTON IS HELD AFTER WALKING)
         //calculates a target velocity for the player.
-        Vector3 targetVel = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        targetVel = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         targetVel = transform.TransformDirection(targetVel);
+        targetVel = rb.transform.rotation * targetVel;
         targetVel *= _moveSpeed;
-        
-        //applies force that will reach our target velocity but wont go farther than that. 
+
+        //gets value between our current velocity and the velocity we want to get to so it controls the velocity
+        //otherwise it would cause the player to shoot off really far 
         Vector3 velocity = rb.velocity;
         Vector3 velChange = (targetVel - velocity);
 
-        velChange.x = Mathf.Clamp(velChange.x, -maxChange, maxChange);
-        velChange.z = Mathf.Clamp(velChange.z, -maxChange, maxChange);
+        //velChange.x = Mathf.Clamp(velChange.x, -maxChange, maxChange);
+        //velChange.z = Mathf.Clamp(velChange.z, -maxChange, maxChange);
         velChange.y = 0;
-        rb.AddForce(velChange, ForceMode.VelocityChange);
+        rb.velocity += velChange;//rb.AddForce(velChange, ForceMode.VelocityChange);
 
         //rotates player according to the cameras rotation on the y axis
         float _xCharRotation = rb.transform.rotation.y;
         _xCharRotation = cam.GetComponent<CameraLook>().xLook;
         rb.transform.rotation = Quaternion.Euler(0, _xCharRotation, 0);
 
-        /*
-        _xMove = Input.GetAxis("Horizontal");
-        _zMove = Input.GetAxis("Vertical");
-        
-        _movHori = rb.transform.right * _xMove;
-        _movVerti = rb.transform.forward * _zMove;
-        _velocity = (_movHori + _movVerti).normalized * _moveSpeed; //get direction and then multiply that direction by speed
-        */
-        //CharacterC.Move(_velocity * Time.deltaTime);
-
-        if ((_xMove > 0 || _xMove < 0) || (_zMove > 0 || _zMove < 0))//momentum increses over time the more you move until it reaches max momentum for the players current velocity
+        if (targetVel.x != 0 || targetVel.z != 0)//momentum increases over time the more you move until it reaches max momentum for the players current velocity
             currMomentum += Time.deltaTime;
         else
             currMomentum = 1; //momentum while not moving is 1
 
         //NOTE: realistically, when youre standing your momentum should be 0; but, for our purposes, setting it to 1 when not moving...
         //currently gives the best results. unless a better method is found to fix this (to set idle momentum exactly to 0), the above seems to work well. 
-
-        //CharacterC.Move(_velocity * Time.deltaTime);
 
         momentum = Mathf.Min(currMomentum, maxMomentum);
     }
@@ -202,9 +178,7 @@ public class PlayerController : MonoBehaviour {
 
     void Jump()
     {
-
-
-        rb.AddForce(momentum * _velocity.x, jumpForce, momentum * _velocity.z, ForceMode.Impulse); //its slowing down to walking speed in the air
+        rb.AddForce(momentum * targetVel.x, jumpForce, momentum * targetVel.z, ForceMode.Impulse); //its slowing down to walking speed in the air
     }
 
     void Crouch() //WORRY ABOUT THIS LAST @antonio - I rather take care of it
