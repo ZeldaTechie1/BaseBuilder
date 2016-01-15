@@ -4789,10 +4789,10 @@ MonoBehaviour:
   xLook: 0
   yLook: 0
   mouseSmoothTime: .0500000007
-  headBobSpeed: 20
-  bobAmtX: 20
-  bobAmtY: 20
-  heightRatio: 1
+  headBobSpeed: .150000006
+  bobAmtX: .100000001
+  bobAmtY: .100000001
+  midpoint: 1
 --- !u!1 &1315838364
 GameObject:
   m_ObjectHideFlags: 0

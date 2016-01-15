@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour {
     SphereCollider sc;
     Camera cam;
 
-    public bool grounded = true;
+    public bool grounded;
 
 	// Use this for initialization
 	void Start ()

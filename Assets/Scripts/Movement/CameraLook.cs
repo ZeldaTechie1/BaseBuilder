@@ -16,27 +16,28 @@ public class CameraLook : MonoBehaviour {
     public float mouseSmoothTime;
 
     //find player
-    GameObject player;
+    GameObject player, pContainer;
+    Vector3 currPos;
 
     //head bob
-    public float headBobSpeed, bobAmtX, bobAmtY, heightRatio;
+    public float headBobSpeed, bobAmtX, bobAmtY;
+    public float midpoint;
     float stepCtr;
-    Vector3 playerLastPos;
+    float hori, verti, timer, waveslice, camPosy;
 
     void Awake()
     {
-        
     }
     // Use this for initialization
     void Start () {
         player = GameObject.Find("Player Physics");
-        pController = player.GetComponent<PlayerController>();
-        
+        pContainer = GameObject.Find("Player Container");
+        pController = pContainer.GetComponent<PlayerController>();        
     }
 	
 	// Update is called once per frame
     void Update(){
-        
+        currPos = player.transform.position;
     }
 	void FixedUpdate () {
         LookAround();
@@ -47,21 +48,52 @@ public class CameraLook : MonoBehaviour {
 
     void CameraPosition()
     {
-        playerLastPos = player.transform.position;
-        transform.position = playerLastPos;
+        transform.position = player.transform.position;
 
-        //head bob stuff
+        //head bob stuff        
+        waveslice = 0;
+        hori = Input.GetAxis("Horizontal");
+        verti = Input.GetAxis("Vertical");
+        
+        if ((Mathf.Abs(hori) == 0) && Mathf.Abs(verti) == 0 || !pController.grounded)
+        {
+            timer = 0.0f;
+        }
+        else
+        {            
+            waveslice = Mathf.Sin(timer);
+            timer = timer + (headBobSpeed * pController.currSpeed);
+            //this if statement causes the camera to come back down once it has reached it's max height at PI * 2
+            if(timer > Mathf.PI * 2)
+            {
+                timer -= (Mathf.PI * 2);
+            }
+            Debug.Log(timer);
+        }
+        if (waveslice != 0)
+        {
+            float _transChange = waveslice * bobAmtY;
+            float _totalAxes = Mathf.Abs(hori) + Mathf.Abs(verti);
+            _totalAxes = Mathf.Clamp(_totalAxes, 0.0f, 1.0f);
+            _transChange = _totalAxes * _transChange;
+            camPosy = player.transform.position.y;
+            camPosy = midpoint * _transChange;
+
+            transform.position = new Vector3 (player.transform.position.x, player.transform.position.y + camPosy, player.transform.position.z);
+        }
+        /*
         Vector3 _camPos;
         
         stepCtr += Vector3.Distance(playerLastPos, player.transform.position) * headBobSpeed;
 
-        _camPos.x = transform.localPosition.x;
-        _camPos.y = transform.localPosition.y;
+        _camPos.x = transform.position.x;
+        _camPos.y = transform.position.y;
 
         _camPos.x = Mathf.Sin(stepCtr) * bobAmtX;
         _camPos.y = Mathf.Cos(stepCtr * 2) * bobAmtY * -1;
 
         playerLastPos = player.transform.position;
+        */
     }
 
     void LookAround()
