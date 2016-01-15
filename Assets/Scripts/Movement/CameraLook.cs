@@ -50,7 +50,8 @@ public class CameraLook : MonoBehaviour {
     {
         transform.position = player.transform.position;
 
-        //head bob stuff        
+        //head bob stuff     
+           
         waveslice = 0;
         hori = Input.GetAxis("Horizontal");
         verti = Input.GetAxis("Vertical");
@@ -61,7 +62,7 @@ public class CameraLook : MonoBehaviour {
         }
         else
         {            
-            waveslice = Mathf.Sin(timer);
+            waveslice = Mathf.Cos(timer);
             timer = timer + (headBobSpeed * pController.currSpeed);
             //this if statement causes the camera to come back down once it has reached it's max height at PI * 2
             if(timer > Mathf.PI * 2)
@@ -76,6 +77,7 @@ public class CameraLook : MonoBehaviour {
             float _totalAxes = Mathf.Abs(hori) + Mathf.Abs(verti);
             _totalAxes = Mathf.Clamp(_totalAxes, 0.0f, 1.0f);
             _transChange = _totalAxes * _transChange;
+
             camPosy = player.transform.position.y;
             camPosy = midpoint * _transChange;
 
