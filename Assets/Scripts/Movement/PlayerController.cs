@@ -123,7 +123,6 @@ public class PlayerController : MonoBehaviour {
     {
         //calculates a target velocity for the player.
         targetVel = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        targetVel = transform.TransformDirection(targetVel);
         targetVel = rb.transform.rotation * targetVel;
         targetVel *= _moveSpeed;
 
@@ -132,8 +131,8 @@ public class PlayerController : MonoBehaviour {
         Vector3 velocity = rb.velocity;
         Vector3 velChange = (targetVel - velocity);
         velChange.y = 0;
-
-        rb.velocity += velChange;//rb.AddForce(velChange, ForceMode.VelocityChange);
+        
+        rb.AddForce(velChange, ForceMode.VelocityChange);
 
         //rotates player according to the cameras rotation on the y axis
         float _xCharRotation = rb.transform.rotation.y;
