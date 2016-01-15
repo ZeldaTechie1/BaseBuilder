@@ -22,9 +22,11 @@ public class PlayerController : MonoBehaviour {
     //Speed-stuff
     [SerializeField]
     public float crouchSpeed, walkSpeed, runSpeed, currSpeed;
-    Vector3 targetVel;
+    Vector3 targetVel, currVel;
     float _xMove, _zMove;
     float maxChange = 20f;
+    float xSmoothV, zSmoothV;
+    public float smoothTime;
 
     //mouse sensitivity
     public float mouseSensX, mouseSensY;
@@ -128,11 +130,11 @@ public class PlayerController : MonoBehaviour {
 
         //gets value between our current velocity and the velocity we want to get to so it controls the velocity
         //otherwise it would cause the player to shoot off really far 
-        Vector3 velocity = rb.velocity;
-        Vector3 velChange = (targetVel - velocity);
-        velChange.y = 0;
-        
-        rb.AddForce(velChange, ForceMode.VelocityChange);
+        Vector3 _velocity = rb.velocity;
+        Vector3 _velChange = (targetVel - _velocity);
+        _velChange.y = 0;
+
+        rb.AddForce(_velChange, ForceMode.VelocityChange);
 
         //rotates player according to the cameras rotation on the y axis
         float _xCharRotation = rb.transform.rotation.y;

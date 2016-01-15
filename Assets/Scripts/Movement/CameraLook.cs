@@ -3,8 +3,11 @@ using System.Collections;
 
 public class CameraLook : MonoBehaviour {
 
+
+    PlayerController pController;
     //cam rotation
     public float mouseSensX, mouseSensY;
+    [HideInInspector] 
     public float xLook, yLook;
     float currXRotation, currYRotation;    
 
@@ -13,25 +16,52 @@ public class CameraLook : MonoBehaviour {
     public float mouseSmoothTime;
 
     //find player
-    public GameObject player;
+    GameObject player;
 
+    //head bob
+    public float headBobSpeed, bobAmtX, bobAmtY, heightRatio;
+    float stepCtr;
+    Vector3 playerLastPos;
+
+    void Awake()
+    {
+        
+    }
     // Use this for initialization
     void Start () {
+        player = GameObject.Find("Player Physics");
+        pController = player.GetComponent<PlayerController>();
         
     }
 	
 	// Update is called once per frame
+    void Update(){
+        
+    }
 	void FixedUpdate () {
         LookAround();
 	}
-    void LateUpdate()
-    {
+    void LateUpdate(){
         CameraPosition();
     }
 
     void CameraPosition()
     {
-        transform.position = player.transform.position;
+        playerLastPos = player.transform.position;
+        transform.position = playerLastPos;
+
+        //head bob stuff
+        Vector3 _camPos;
+        
+        stepCtr += Vector3.Distance(playerLastPos, player.transform.position) * headBobSpeed;
+
+        _camPos.x = transform.localPosition.x;
+        _camPos.y = transform.localPosition.y;
+
+        _camPos.x = Mathf.Sin(stepCtr) * bobAmtX;
+        _camPos.y = Mathf.Cos(stepCtr * 2) * bobAmtY * -1;
+
+        playerLastPos = player.transform.position;
     }
 
     void LookAround()

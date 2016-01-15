@@ -4789,7 +4789,10 @@ MonoBehaviour:
   xLook: 0
   yLook: 0
   mouseSmoothTime: .0500000007
-  player: {fileID: 1858451602}
+  headBobSpeed: 20
+  bobAmtX: 20
+  bobAmtY: 20
+  heightRatio: 1
 --- !u!1 &1315838364
 GameObject:
   m_ObjectHideFlags: 0
@@ -5629,9 +5632,10 @@ MonoBehaviour:
   currMomentum: 0
   maxMomentum: 3
   crouchSpeed: 2
-  walkSpeed: 3
+  walkSpeed: 4
   runSpeed: 8
   currSpeed: 0
+  smoothTime: .100000001
   mouseSensX: 5
   mouseSensY: 5
   jumpForce: 5
