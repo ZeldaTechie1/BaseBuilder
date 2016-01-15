@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 
     //Speed-stuff
     [SerializeField]
-    public float crouchSpeed, walkSpeed, runSpeed;
+    public float crouchSpeed, walkSpeed, runSpeed, currSpeed;
     Vector3 targetVel;
     float _xMove, _zMove;
     float maxChange = 20f;
@@ -131,10 +131,8 @@ public class PlayerController : MonoBehaviour {
         //otherwise it would cause the player to shoot off really far 
         Vector3 velocity = rb.velocity;
         Vector3 velChange = (targetVel - velocity);
-
-        //velChange.x = Mathf.Clamp(velChange.x, -maxChange, maxChange);
-        //velChange.z = Mathf.Clamp(velChange.z, -maxChange, maxChange);
         velChange.y = 0;
+
         rb.velocity += velChange;//rb.AddForce(velChange, ForceMode.VelocityChange);
 
         //rotates player according to the cameras rotation on the y axis
@@ -156,7 +154,8 @@ public class PlayerController : MonoBehaviour {
     void Walk()
     {
         maxMomentum = 1;
-        Move(walkSpeed);
+        currSpeed = Mathf.Lerp(currSpeed, walkSpeed, 5f * Time.deltaTime); //when player stops running it will not reach walk speed immediatly
+        Move(currSpeed);
     }
 
     //lean to either side
@@ -173,7 +172,8 @@ public class PlayerController : MonoBehaviour {
     void Run()
     {
         maxMomentum = 3;
-        Move(runSpeed);
+        currSpeed = Mathf.Lerp(currSpeed, runSpeed, 1f * Time.deltaTime); //player takes a bit of time to reach full running speed (humans cant reach max speed in less than one second)
+        Move(currSpeed);
     }
 
     void Jump()

@@ -535,7 +535,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 182207300}
   - 20: {fileID: 182207299}
-  - 114: {fileID: 182207298}
   m_Layer: 0
   m_Name: Gun Camera
   m_TagString: MainCamera
@@ -543,23 +542,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &182207298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 182207297}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743ceb49f885fab4cbb694fd1cfe1f8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSensX: 3
-  mouseSensY: 3
-  xLook: 0
-  yLook: 0
-  mouseSmoothTime: .100000001
-  player: {fileID: 1858451602}
 --- !u!20 &182207299
 Camera:
   m_ObjectHideFlags: 0
@@ -4806,7 +4788,7 @@ MonoBehaviour:
   mouseSensY: 3
   xLook: 0
   yLook: 0
-  mouseSmoothTime: .100000001
+  mouseSmoothTime: .0500000007
   player: {fileID: 1858451602}
 --- !u!1 &1315838364
 GameObject:
@@ -5649,6 +5631,7 @@ MonoBehaviour:
   crouchSpeed: 2
   walkSpeed: 3
   runSpeed: 8
+  currSpeed: 0
   mouseSensX: 5
   mouseSensY: 5
   jumpForce: 5
