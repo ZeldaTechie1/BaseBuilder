@@ -4789,7 +4789,7 @@ MonoBehaviour:
   xLook: 0
   yLook: 0
   mouseSmoothTime: .0500000007
-  headBobSpeed: .150000006
+  headBobSpeed: .100000001
   bobAmtX: .0500000007
   bobAmtY: .0500000007
   midpoint: 1

@@ -23,7 +23,7 @@ public class CameraLook : MonoBehaviour {
     public float headBobSpeed, bobAmtX, bobAmtY;
     public float midpoint;
     float stepCtr;
-    float hori, verti, timer, waveslice, camPosy;
+    float hori, verti, timer, waveslice, waveslice2, camPosy, camPosx;
 
     void Awake()
     {
@@ -62,7 +62,9 @@ public class CameraLook : MonoBehaviour {
         }
         else
         {            
-            waveslice = Mathf.Cos(timer);
+            waveslice = Mathf.Cos(timer * 2);
+            waveslice2 = Mathf.Sin(timer);
+
             timer = timer + (headBobSpeed * pController.currSpeed);
             //this if statement causes the camera to come back down once it has reached it's max height at PI * 2
             if(timer > Mathf.PI * 2)
@@ -74,14 +76,20 @@ public class CameraLook : MonoBehaviour {
         if (waveslice != 0)
         {
             float _transChange = waveslice * bobAmtY;
+            float _transChange2 = waveslice2 * bobAmtX * (pController.currSpeed / 2);
+
             float _totalAxes = Mathf.Abs(hori) + Mathf.Abs(verti);
             _totalAxes = Mathf.Clamp(_totalAxes, 0.0f, 1.0f);
             _transChange = _totalAxes * _transChange;
+            _transChange2 = _totalAxes * _transChange2;
 
             camPosy = player.transform.position.y;
             camPosy = midpoint * _transChange;
 
-            transform.position = new Vector3 (player.transform.position.x, player.transform.position.y + camPosy, player.transform.position.z);
+            camPosx = player.transform.position.x;
+            camPosx = midpoint * _transChange2;
+
+            transform.position = new Vector3 (player.transform.position.x + camPosx, player.transform.position.y + camPosy, player.transform.position.z);
         }
         /*
         Vector3 _camPos;
