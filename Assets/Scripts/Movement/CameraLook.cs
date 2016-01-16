@@ -35,10 +35,6 @@ public class CameraLook : MonoBehaviour {
         pController = pContainer.GetComponent<PlayerController>();        
     }
 	
-	// Update is called once per frame
-    void Update(){
-        currPos = player.transform.position;
-    }
 	void FixedUpdate () {
         LookAround();
 	}
@@ -50,20 +46,22 @@ public class CameraLook : MonoBehaviour {
     {
         transform.position = player.transform.position;
 
-        //head bob stuff     
-           
+        //head bob
+        //I got this script from the unity wiki page but had to modify slightly so that it would bob side to side as well...
         waveslice = 0;
         hori = Input.GetAxis("Horizontal");
         verti = Input.GetAxis("Vertical");
-        
+
+        //if player isn't moving or is not grounded the camera shouldn' bob
         if ((Mathf.Abs(hori) == 0) && Mathf.Abs(verti) == 0 || !pController.grounded)
         {
-            timer = 0.0f;
+            timer = 0.0f; 
         }
         else
-        {            
-            waveslice = Mathf.Cos(timer * 2);
-            waveslice2 = Mathf.Sin(timer);
+        {
+            //these functions are affected by the timer, which increases with everystep according to the headBobSpeed var up to a certain point
+            waveslice = Mathf.Cos(timer * 2);//stores cosine function into this variable
+            waveslice2 = Mathf.Sin(timer);//stores sine function into this variable
 
             timer = timer + (headBobSpeed * pController.currSpeed);
             //this if statement causes the camera to come back down once it has reached it's max height at PI * 2
@@ -71,12 +69,11 @@ public class CameraLook : MonoBehaviour {
             {
                 timer -= (Mathf.PI * 2);
             }
-            Debug.Log(timer);
         }
         if (waveslice != 0)
         {
-            float _transChange = waveslice * bobAmtY;
-            float _transChange2 = waveslice2 * bobAmtX * (pController.currSpeed / 2);
+            float _transChange = waveslice * bobAmtY;//the amount the translation has changed for the y variable
+            float _transChange2 = waveslice2 * bobAmtX * (pController.currSpeed / 2);//the amount the translation has changed for the x variable... the greater the player's speed the greater the camera bobs side to side
 
             float _totalAxes = Mathf.Abs(hori) + Mathf.Abs(verti);
             _totalAxes = Mathf.Clamp(_totalAxes, 0.0f, 1.0f);
@@ -91,19 +88,6 @@ public class CameraLook : MonoBehaviour {
 
             transform.position = new Vector3 (player.transform.position.x + camPosx, player.transform.position.y + camPosy, player.transform.position.z);
         }
-        /*
-        Vector3 _camPos;
-        
-        stepCtr += Vector3.Distance(playerLastPos, player.transform.position) * headBobSpeed;
-
-        _camPos.x = transform.position.x;
-        _camPos.y = transform.position.y;
-
-        _camPos.x = Mathf.Sin(stepCtr) * bobAmtX;
-        _camPos.y = Mathf.Cos(stepCtr * 2) * bobAmtY * -1;
-
-        playerLastPos = player.transform.position;
-        */
     }
 
     void LookAround()
